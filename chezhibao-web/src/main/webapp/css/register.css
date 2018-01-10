@@ -1,0 +1,18 @@
+.register_title{
+    text-align: center;
+    margin-top: 15%;
+}
+
+.register_content{
+    width: 250px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.register_table{
+    width: 250px;
+}
+
+.register_text{
+    text-align: right;
+}

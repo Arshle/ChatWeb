@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chezhibao.mappers.PlayerDao">
+
+    <!--playerMap-->
+    <resultMap id="playerMap" type="player">
+        <id property="playerId" column="id"/>
+        <result property="playerName" column="playerName"/>
+        <result property="password" column="password"/>
+        <result property="level" column="level"/>
+        <result property="exp" column="exp"/>
+    </resultMap>
+
+    <!--根据id获取玩家-->
+    <select id="getPlayerById" resultMap="playerMap" parameterType="int" >
+        SELECT
+          id,playerName,password,level,exp
+        FROM
+          t_chat_player
+        WHERE
+          id = #{playerId}
+    </select>
+
+    <!--根据玩家名称获取玩家-->
+    <select id="getPlayerByName" resultMap="playerMap" parameterType="string" >
+        SELECT
+          id,playerName,password,level,exp
+        FROM
+          t_chat_player
+        WHERE
+          playerName = #{playerName}
+    </select>
+
+    <!--创建玩家-->
+    <insert id="insertPlayer" parameterType="player" useGeneratedKeys="true" keyProperty="playerId" keyColumn="id" >
+        INSERT INTO
+          t_chat_player(playerName,password,level,exp)
+        VALUES
+          (#{playerName},#{password},#{level},#{exp})
+    </insert>
+
+</mapper>

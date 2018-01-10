@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--queue connectionFactory-->
+    <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${activemq.broker.url}"/>
+        <property name="copyMessageOnSend" value="${activemq.connection.copyMessageOnSend}"/>
+        <property name="producerWindowSize" value="${activemq.connection.producerWindowSize}"/>
+        <property name="alwaysSyncSend" value="${activemq.connection.alwaysSyncSend}"/>
+        <property name="sendTimeout" value="${activemq.connection.sendTimeout}"/>
+        <property name="maxThreadPoolSize" value="${activemq.connection.maxThreadPoolSize}"/>
+    </bean>
+
+    <!--queue poolConnectionFactory-->
+    <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
+        <property name="connectionFactory" ref="jmsConnectionFactory"/>
+        <property name="maxConnections" value="${activemq.max.connections}"/>
+    </bean>
+
+    <!--queue message listener-->
+    <bean id="queueMessageListener" class="com.chezhibao.listener.AMQMessageListener"/>
+
+    <!--queue jmsContainer-->
+    <bean id="jmsQueueContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsFactory"/>
+        <property name="destinationName" value="${activemq.default.queue}"/>
+        <property name="messageListener" ref="queueMessageListener"/>
+        <property name="pubSubDomain" value="${activemq.queue.pubSubDomain}"/>
+    </bean>
+
+    <!--topic jmsContainer-->
+    <bean id="jmsTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="jmsFactory"/>
+        <property name="destinationName" value="${activemq.default.topic}"/>
+        <property name="messageListener" ref="queueMessageListener"/>
+        <property name="pubSubDomain" value="${activemq.topic.pubSubDomain}"/>
+    </bean>
+</beans>

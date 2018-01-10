@@ -1,0 +1,23 @@
+.index_title{
+    text-align: center;
+    margin-top: 15%;
+}
+
+.index_content{
+    text-align: center;
+    width: 100%;
+}
+
+.login_content{
+    width:250px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.login_form{
+    text-align: center;
+}
+
+.login_text{
+    text-align: right;
+}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chezhibao.user.mappers.LoginUserDao">
+    <select id="getUser" parameterType="loginUser" resultType="loginUser">
+        SELECT
+          id,userName,loginAccount,password,birthday,level,exp,lastLoginTime,
+          createTime,updateTime,interests,identity,mobile
+        FROM
+          t_login_user
+        WHERE
+          1=1
+          <if test="id != 0">
+            AND id = #{id}
+          </if>
+          <if test="loginAccount != null and loginAccount != ''">
+            AND loginAccount = #{loginAccount}
+          </if>
+    </select>
+
+    <select id="getUsersByUserName" parameterType="string" resultType="loginUser">
+        SELECT
+          id,userName,loginAccount,password,birthday,level,exp,lastLoginTime,
+          createTime,updateTime,interests,identity,mobile
+        FROM
+          t_login_user
+        WHERE
+          userName = #{userName}
+    </select>
+
+    <select id="getAllUsers" resultType="loginUser">
+        SELECT
+          id,userName,loginAccount,password,birthday,level,exp,lastLoginTime,
+          createTime,updateTime,interests,identity,mobile
+        FROM
+          t_login_user
+    </select>
+
+    <insert id="addUser" parameterType="loginUser" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO
+          t_login_user(userName,loginAccount,password,birthday,interests,identity,mobile)
+        VALUES
+          (#{userName},#{loginAccount},#{password},#{birthday},#{interests},#{identity},#{mobile})
+    </insert>
+
+    <delete id="deleteUser" parameterType="loginUser" >
+        DELETE FROM
+          t_login_user
+        WHERE
+          1=1
+        <if test="id != 0">
+            AND id = #{id}
+        </if>
+        <if test="loginAccount != null and loginAccount != ''">
+            AND loginAccount = #{loginAccount}
+        </if>
+        <if test="userName != null and userName != ''">
+            AND userName = #{userName}
+        </if>
+
+    </delete>
+
+    <update id="updateUser" parameterType="loginUser" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        UPDATE
+          t_login_user
+        <trim prefix="SET" suffixOverrides=",">
+          <if test="userName != null and userName != ''">
+              userName = #{userName},
+          </if>
+          <if test="loginAccount != null and loginAccount != ''">
+              loginAccount = #{loginAccount},
+          </if>
+          <if test="password != null and password != ''">
+              password = #{password},
+          </if>
+          <if test="interests != null and interests != ''">
+              interests = #{interests},
+          </if>
+          <if test="identity != null and identity != ''">
+              identity = #{identity},
+          </if>
+          <if test="mobile != null and mobile != ''">
+              mobile = #{mobile}
+          </if>
+        </trim>
+        WHERE
+          id = #{id}
+    </update>
+</mapper>
